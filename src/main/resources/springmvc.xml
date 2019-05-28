@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+    <!--扫描IOC注解-->
+    <context:component-scan base-package="com.lzh.controller"/>
+
+    <!--开启最新的处理器映射器/适配器(mvc注解驱动)-->
+    <mvc:annotation-driven/>
+
+
+    <!--配置视图解析器并添加前后缀-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--加载短信配置文件-->
+    <context:property-placeholder location="classpath:ssm.properties"/>
+
+    <!--自动对静态资源放行-->
+   <!--<mvc:default-servlet-handler default-servlet-name="default"/>-->
+
+    <!--手动对静态资源放行-->
+    <mvc:resources mapping="/static/**" location="/static/"/>
+
+    <!--配置拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <!--对user操作放行-->
+            <mvc:exclude-mapping path="/user/**"/>
+            <!--对静态资源放行-->
+            <mvc:exclude-mapping path="/static/**"/>
+            <!--指定拦截器-->
+            <bean class="com.lzh.interceptor.AuthenticationInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+
+
+    <!--文件上传的处理器-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--限制文件大小5*1024*1024-->
+        <property name="maxUploadSize" value="5242880"/>
+    </bean>
+
+
+
+    <!--简单异常处理器-->
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <!--指定默认的错误信息视图名-->
+        <property name="defaultErrorView" value="500"/>
+
+    </bean>
+
+</beans>

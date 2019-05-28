@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.lzh.dao.ItemDao">
+
+
+    <!--//模糊查询商品数量
+    Integer findCountByLike(@Param("name") String name);-->
+    <select id="findCountByLike" resultType="Integer">
+        select count(1) from item
+        <where>
+            <if test="name != null and name!=''">
+                name like "%"#{name}"%"
+            </if>
+        </where>
+    </select>
+
+
+
+    <!--//分页查询
+    List<Item> findItemByLikePage(@Param("name") String name,
+                                  @Param("offset") Integer offset,
+                                  @Param("size") Integer size);-->
+    <select id="findItemByLikePage" resultType="Item">
+        select * from item
+
+        <where>
+            <if test="name != null and name != ''">
+               name like "%"#{name}"%"
+            </if>
+        </where>
+        order by created desc
+        limit #{offset},#{size}
+    </select>
+
+    <!--
+    //添加商品
+    Integer saveItem(Item item);
+    -->
+    <insert id="saveItem">
+        insert into item
+        (name, price, production_date, description, pic)
+        values
+        (#{name},#{price},#{productionDate},#{description},#{pic});
+    </insert>
+
+
+    <!--
+    //通过id查询商品
+    Item findItemById(@Param("id") Long id);
+    -->
+    <select id="findItemById" resultType="Item">
+        select * from item where id = #{id};
+    </select>
+
+    <!--方法一:动态sql注入(最稳妥)
+    //通过id进行修改商品信息
+    Integer updateItemById(Item item);
+    -->
+    <update id="updateItemById">
+        update item
+        <set>
+
+            <if test="name !=null and name!=''">
+                name = #{name},
+            </if>
+            <if test=" price != null">
+                price = #{price},
+            </if>
+
+            <if test="productionDate != null">
+                production_date = #{productionDate},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="pic != null and pic != ''">
+                pic = #{pic}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <!--方法二:一般注入(由于item都不为空,可以采用此方法)-->
+    <!--<update id="updateItemById">
+        update item set
+            name = #{name},
+            price = #{price},
+            production_date = #{productionDate},
+            description = #{description},
+            pic = #{pic}
+    </update>-->
+
+
+    <!--
+    //通过id删除商品
+    Integer deleteItemById(@Param("id") Long id);
+    -->
+    <delete id="deleteItemById">
+        delete from item where id = #{id}
+    </delete>
+
+
+
+
+</mapper>
