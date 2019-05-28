@@ -36,7 +36,7 @@ public class PageInfo<T> {
         this.page = page < 1 ? 1 : page;
         this.size = size < 1 ? 5 : size;
         this.count = count;
-        this.pages = (int)(Math.ceil(this.count*1.0/this.size));
+        this.pages = (int)Math.ceil(this.count*1.0/this.size);
         this.offset = (this.page-1)*this.size;
     }
 
