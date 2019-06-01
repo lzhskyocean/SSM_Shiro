@@ -6,6 +6,20 @@
 
 
 
+    <!--添加shiro的核心过滤器-->
+    <filter>
+        <filter-name>shiroFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>shiroFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+
+
+
     <!--配置前端控制器-->
     <servlet>
         <servlet-name>springmvc</servlet-name>
@@ -33,6 +47,8 @@
         <servlet-name>default</servlet-name>
         <url-pattern>/static/**</url-pattern>
     </servlet-mapping>-->
+
+
 
 
 

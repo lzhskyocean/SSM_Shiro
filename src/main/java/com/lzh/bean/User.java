@@ -19,6 +19,10 @@ public class User {
   private String username;
   @NotBlank(message = "密码名不能为空")
   private String password;
+
+  //密码加盐
+  private String salt;
+
   @NotBlank(message = "手机号名不能为空")
   private String phone;
   private Date created;

@@ -77,7 +77,6 @@
 <div id="page">
     <span style="font-size: 20px;">当前第 ${pageInfo.page} 页 / 共 ${pageInfo.pages} 页  (${pageInfo.count}条)</span>
     <div style="float: right;">
-
 		<c:if test="${pageInfo.page>1}">
 			<button class="btn btn-warning" onclick="page(1)">首页</button>
 			<button class="btn btn-warning" onclick="page(${pageInfo.page-1})">上一页</button>
@@ -86,8 +85,6 @@
 			<button class="btn btn-warning" onclick="page(${pageInfo.page+1})">下一页</button>
 			<button class="btn btn-warning" onclick="page(${pageInfo.pages})">尾页</button>
 		</c:if>
-
-
     </div>
 </div>
 

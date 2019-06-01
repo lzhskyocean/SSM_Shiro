@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+
+
+
+
+    <!--安全管理器-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+
+        <property name="realm" ref=""/>
+    </bean>
+
+
+
+    <!--创建-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+
+        <property name="filterChainDefinitions">
+            <value>
+                <!--  路径=过滤器别名
+                anon放行 logout退出登录 authc认证之后才放行,否则进入指定页面
+                从上到下依次执行
+                -->
+                /login.html = anon
+                /user/login = anon
+                /logout = logout
+                /** = authc
+
+            </value>
+        </property>
+
+    </bean>
+        
+
+
+
+</beans>
