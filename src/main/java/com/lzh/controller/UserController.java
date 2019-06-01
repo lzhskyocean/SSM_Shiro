@@ -6,7 +6,11 @@ import com.lzh.service.UserService;
 import com.yunpian.sdk.YunpianClient;
 import com.yunpian.sdk.model.Result;
 import com.yunpian.sdk.model.SmsSingleSend;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -145,14 +149,46 @@ public class UserController {
                         HttpSession session,
                         Model model
     ) {
+
+
+        //1.区区主题
+
+
+
+
+
+
+
+
+
         //1.校验:是否错误信息
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
 
             return SSMConstant.LOGIN_PAGE;
         }
 
+        //2.获取主体
+        Subject subject = SecurityUtils.getSubject();
+
+
+        try {
+            //3.主体认证提交请求
+            subject.login(new UsernamePasswordToken(username,password));
+            //4.登录成功
+            return SSMConstant.REDIRECT + SSMConstant.ITEM_LIST;
+        } catch (AuthenticationException e) {
+            e.printStackTrace();
+            //登录失败
+            return SSMConstant.LOGIN_PAGE;
+        }
+
+
+
+
+
+
         //2.先根据用户名进行查询
-        User user = userService.login(username);
+     /*   User user = userService.login(username);
 
         if (user != null) {//用户不为空,则进行密码验证
             //检验密码
@@ -166,7 +202,7 @@ public class UserController {
 
         model.addAttribute(SSMConstant.LOGIN_INFO, "你是傻逼小胖墩!!!");
 
-        return SSMConstant.LOGIN_PAGE;
+        return SSMConstant.LOGIN_PAGE;*/
     }
 
 }

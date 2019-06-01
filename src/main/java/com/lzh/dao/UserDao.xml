@@ -15,9 +15,9 @@
     Integer save(User user);-->
     <insert id="save">
         insert into user
-        (username, password, phone)
+       (username, password, phone, salt)
         values
-        (#{username},#{password},#{phone})
+        (#{username},#{password},#{phone},#{salt})
     </insert>
 
 

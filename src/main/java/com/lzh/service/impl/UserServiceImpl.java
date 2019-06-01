@@ -7,6 +7,8 @@ import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 
 /**
  * @author lizhenhao
@@ -28,10 +30,19 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    /*
+    * 注册账户
+    * */
     @Override
     public Integer register(User user) {
-        //密码加密
-        user.setPassword(String.valueOf(new Md5Hash(user.getPassword())));
+
+        //1.
+        String salt = UUID.randomUUID().toString();
+
+        Md5Hash newPassword = new Md5Hash(user.getPassword(), salt, 1024);
+
+        user.setPassword(newPassword.toString());
+        user.setSalt(salt);
 
         return userDao.save(user);
     }
