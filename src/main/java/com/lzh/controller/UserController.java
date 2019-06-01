@@ -149,18 +149,6 @@ public class UserController {
                         HttpSession session,
                         Model model
     ) {
-
-
-        //1.区区主题
-
-
-
-
-
-
-
-
-
         //1.校验:是否错误信息
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
 
@@ -169,7 +157,6 @@ public class UserController {
 
         //2.获取主体
         Subject subject = SecurityUtils.getSubject();
-
 
         try {
             //3.主体认证提交请求
@@ -181,8 +168,6 @@ public class UserController {
             //登录失败
             return SSMConstant.LOGIN_PAGE;
         }
-
-
 
 
 
