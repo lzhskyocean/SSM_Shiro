@@ -7,11 +7,27 @@
 
 
 
+    <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+
+        <property name="hashAlgorithmName" value="MD5"/>
+
+        <property name="hashIterations" value="1024"/>
+
+    </bean>
+
+
+    <bean id="realm" class="com.lzh.shiro.CustomRealm">
+
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
+
+    </bean>
+
+
 
     <!--安全管理器-->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 
-        <property name="realm" ref=""/>
+        <property name="realm" ref="realm"/>
     </bean>
 
 
@@ -19,14 +35,19 @@
     <!--创建-->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 
+        <property name="securityManager" ref="securityManager"/>
+        <!--设置登录页面路径-->
+        <property name="loginUrl" value="/user/login"/>
+
         <property name="filterChainDefinitions">
             <value>
                 <!--  路径=过滤器别名
                 anon放行 logout退出登录 authc认证之后才放行,否则进入指定页面
                 从上到下依次执行
                 -->
-                /login.html = anon
-                /user/login = anon
+
+                /user/** = anon
+                /static/** = anon
                 /logout = logout
                 /** = authc
 
