@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!--安静创建好的类-->
+    <bean id="simpleJob" class="com.lzh.task.SimpleJob"/>
+
+
+    <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+
+        <property name="targetObject" ref="simpleJob"/>
+
+        <property name="targetMethod" value="say"/>
+    </bean>
+
+    <!---->
+    <bean id="tigger1" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+
+        <property name="jobDetail" ref="jobDetail"/>
+
+        <!--cron表达式-->
+        <property name="cronExpression" value="0/3 * * * * ?"/>
+
+    </bean>
+
+
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+
+        <property name="triggers">
+
+            <array>
+                <ref bean="tigger1"/>
+            </array>
+
+        </property>
+    </bean>
+
+
+
+
+
+</beans>
