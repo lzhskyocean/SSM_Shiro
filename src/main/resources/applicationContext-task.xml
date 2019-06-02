@@ -4,28 +4,31 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 
-    <!--安静创建好的类-->
+    <!--创建好任务POJO类-->
     <bean id="simpleJob" class="com.lzh.task.SimpleJob"/>
 
-
+    <!--创建任务描述对象MethodInvokingJobDetailFactoryBean(核心一)-->
     <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 
+        <!--目标类-->
         <property name="targetObject" ref="simpleJob"/>
 
+        <!--目标方法-->
         <property name="targetMethod" value="say"/>
     </bean>
 
-    <!---->
+    <!--创建目标周期CronTriggerFactoryBean(核心二)-->
     <bean id="tigger1" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 
+        <!--任务描述-->
         <property name="jobDetail" ref="jobDetail"/>
 
-        <!--cron表达式-->
+        <!--cron表达式(核心)-->
         <property name="cronExpression" value="0/3 * * * * ?"/>
 
     </bean>
 
-
+    <!--指定好周期运行的任务注入到SchedulerFactoryBean(核心三)-->
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 
         <property name="triggers">
